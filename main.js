@@ -10,3 +10,65 @@ document.getElementById('sketch_name').innerHTML = 'Sketch To be Drawn' + sketch
  drawn_sketch ="";
  answer_holder ="";
  score = 0;
+
+ function updateCanvas() {
+     background("white");
+     random_number = Math.floor((Math.random() * quick_draw_data_set) + 1);
+     console.log(quick_draw_data_set[random_number]);
+     sketch = quick_draw_data_set[random_number];
+     document.getElementById('sketch_name').innerHTML = 'Sketch To Be Drawn' + sketch;
+ }
+
+ function preload() {
+     classifier = ml5.imageclassifier('DoodleNat');
+ }
+
+ function setup() {
+     canvas = createCanvas(280, 280);
+     canvas.center();
+     background("white");
+     canvas.mouseReleased(classifyCanvas);
+ }
+
+ function clearCanvas(){
+     background("white");
+ }
+
+ function draw() {
+     check_sketch();
+     if (drawn_sketch == sketch){
+        answer_holder = "set";
+        score++;
+     }
+     strokeWeight (13);
+     stroke(0);
+     if (mouseIsPressed) {
+         line(pmouseX, pmouseY, mouseX, mouseY);
+     }
+ }
+
+ function classifyCanvas() {
+     classifier.classify(canvas, gotResult);
+ }
+
+ function gotReslt () {
+     if(error) {
+         console.error(error);
+     }
+     )
+     console.log(results);
+ }
+
+ function check_sketch() {
+     timer_counter++;
+     console.log(timer_counter);
+     if (timer_counter > 400){
+         timer_counter = 0
+         timer_checker = "Completed"
+     }
+     if (timer_checker == "completed"|| answer_holder == "set" ) {
+         timer_checker = "";
+         answer_holder = "";
+         updateCanvas();
+     }
+ }
